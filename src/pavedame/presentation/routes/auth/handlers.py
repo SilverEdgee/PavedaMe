@@ -1,7 +1,9 @@
 from fastapi import APIRouter
 from starlette import status
 
-from pavedame.presentation.routes.auth.schemas import SignUpRequestSchema, SignUpResponseSchema, LoginRequestSchema
+from pavedame.application.auth.login import LoginData
+from pavedame.application.auth.signup import SignUpData
+from pavedame.presentation.routes.auth.schemas import LoginRequestSchema, SignUpRequestSchema, SignUpResponseSchema
 
 auth_router: APIRouter = APIRouter(
     prefix="/auth",

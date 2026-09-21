@@ -1,7 +1,7 @@
 from typing import Annotated
 from uuid import UUID
 
-from pydantic import BaseModel, EmailStr, Field, field_validator, SecretStr
+from pydantic import BaseModel, EmailStr, Field, SecretStr
 
 
 class SignUpRequestSchema(BaseModel):

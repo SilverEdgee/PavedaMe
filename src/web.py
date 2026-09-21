@@ -1,8 +1,6 @@
 from fastapi import FastAPI
 
 
-
-
 def create_app() -> FastAPI:
     #add exception_handler, configuration
     app: FastAPI = FastAPI(
