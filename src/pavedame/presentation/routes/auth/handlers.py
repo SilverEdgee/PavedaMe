@@ -1,13 +1,17 @@
+from dishka import FromDishka
+from dishka.integrations.fastapi import DishkaRoute
 from fastapi import APIRouter
 from starlette import status
 
-from pavedame.application.auth.login import LoginData
-from pavedame.application.auth.signup import SignUpData
+from pavedame.application.auth.login import LoginData, LoginHandler
+from pavedame.application.auth.logout import LogoutHandler
+from pavedame.application.auth.signup import SignUpData, SignUpHandler
 from pavedame.presentation.routes.auth.schemas import LoginRequestSchema, SignUpRequestSchema, SignUpResponseSchema
 
 auth_router: APIRouter = APIRouter(
     prefix="/auth",
     tags=["auth"],
+    route_class=DishkaRoute,
 )
 
 
@@ -19,8 +23,8 @@ auth_router: APIRouter = APIRouter(
     responses={}
 )
 async def sign_up(
-        request: SignUpRequestSchema,
-        interactor,
+    request: SignUpRequestSchema,
+    interactor: FromDishka[SignUpHandler],
 ) -> SignUpResponseSchema:
     data = SignUpData(
         username=request.username,
@@ -41,8 +45,8 @@ async def sign_up(
     responses={}
 )
 async def login(
-        request: LoginRequestSchema,
-        interactor,
+    request: LoginRequestSchema,
+    interactor: FromDishka[LoginHandler],
 ) -> None:
     data = LoginData(
         email=request.email,
@@ -59,6 +63,6 @@ async def login(
     responses={}
 )
 async def logout(
-        interactor,
+    interactor: FromDishka[LogoutHandler],
 ) -> None:
     await interactor()

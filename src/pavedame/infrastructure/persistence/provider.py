@@ -1,12 +1,14 @@
-from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine, async_sessionmaker, AsyncSession
+from collections.abc import AsyncIterator
 
-from pavedame.setup.config.database import SQLAlchemyConfig, PostgresConfig
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
+
+from pavedame.setup.config.database import PostgresConfig, SQLAlchemyConfig
 
 
 async def get_engine(
-        sqlalchemy_config: SQLAlchemyConfig,
-        postgres_config: PostgresConfig,
-):
+    sqlalchemy_config: SQLAlchemyConfig,
+    postgres_config: PostgresConfig,
+) -> AsyncIterator[AsyncEngine]:
     engine: AsyncEngine = create_async_engine(
         postgres_config.uri,
         echo=sqlalchemy_config.echo,
@@ -19,9 +21,9 @@ async def get_engine(
     await engine.dispose()
 
 def get_sessionmaker(
-        engine: AsyncEngine,
-        sqlalchemy_config: SQLAlchemyConfig,
-):
+    engine: AsyncEngine,
+    sqlalchemy_config: SQLAlchemyConfig,
+) -> async_sessionmaker[AsyncSession]:
 
     return async_sessionmaker(
         bind=engine,
@@ -29,7 +31,7 @@ def get_sessionmaker(
     )
 
 async def get_session(
-        sessionmaker: async_sessionmaker[AsyncSession],
-):
+    sessionmaker: async_sessionmaker[AsyncSession],
+) -> AsyncIterator[AsyncSession]:
     async with sessionmaker() as session:
         yield session
