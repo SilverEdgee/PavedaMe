@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import AnyHttpUrl, BaseModel, Field
 
 
 class SMTPConfig(BaseModel):
@@ -37,5 +37,18 @@ class SMTPConfig(BaseModel):
     timeout: float = Field(
         alias="SMTP_TIMEOUT",
         description="SMTP operation timeout in seconds.",
+        gt=0,
+    )
+
+
+class EmailVerificationConfig(BaseModel):
+    public_url: AnyHttpUrl = Field(
+        alias="APP_PUBLIC_URL",
+        description="Public base URL used in email verification links.",
+    )
+
+    token_ttl_seconds: int = Field(
+        alias="EMAIL_VERIFICATION_TTL_SECONDS",
+        description="Email verification token lifetime in seconds.",
         gt=0,
     )

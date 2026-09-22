@@ -8,6 +8,9 @@ from pavedame.application.errors import (
     AlreadyAuthenticatedError,
     AuthenticationError,
     AuthorizationError,
+    EmailNotVerifiedError,
+    ExpiredEmailVerificationTokenError,
+    InvalidEmailVerificationTokenError,
     UserAlreadyExistsError,
 )
 from pavedame.infrastructure.errors import (
@@ -31,6 +34,9 @@ class ExceptionHandler:
             AuthorizationError: status.HTTP_403_FORBIDDEN,
             AlreadyAuthenticatedError: status.HTTP_409_CONFLICT,
             UserAlreadyExistsError: status.HTTP_409_CONFLICT,
+            EmailNotVerifiedError: status.HTTP_403_FORBIDDEN,
+            InvalidEmailVerificationTokenError: status.HTTP_400_BAD_REQUEST,
+            ExpiredEmailVerificationTokenError: status.HTTP_400_BAD_REQUEST,
             GatewayError: status.HTTP_503_SERVICE_UNAVAILABLE,
             EntityAddError: status.HTTP_409_CONFLICT,
             RollbackError: status.HTTP_503_SERVICE_UNAVAILABLE,

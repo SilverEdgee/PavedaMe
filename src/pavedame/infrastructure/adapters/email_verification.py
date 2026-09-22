@@ -2,6 +2,7 @@ import hashlib
 import secrets
 import uuid
 from datetime import UTC, datetime, timedelta
+from urllib.parse import urlencode
 
 from pavedame.application.auth.email_verification_model import (
     EmailVerificationTokenHash,
@@ -14,6 +15,8 @@ from pavedame.application.common.ports.email_verification_token_generator import
 )
 from pavedame.application.common.ports.email_verification_token_hasher import EmailVerificationTokenHasher
 from pavedame.application.common.ports.email_verification_token_timer import EmailVerificationTokenTimer
+from pavedame.application.common.ports.email_verification_url_builder import EmailVerificationURLBuilder
+from pavedame.setup.config.email import EmailVerificationConfig
 
 
 class UUID4EmailVerificationTokenIDGenerator(EmailVerificationTokenIDGenerator):
@@ -39,3 +42,12 @@ class UTCEmailVerificationTokenTimer(EmailVerificationTokenTimer):
     @property
     def expires_at(self) -> datetime:
         return datetime.now(UTC) + self._ttl
+
+
+class PublicEmailVerificationURLBuilder(EmailVerificationURLBuilder):
+    def __init__(self, config: EmailVerificationConfig) -> None:
+        self._public_url = str(config.public_url).rstrip("/")
+
+    def build(self, token: RawEmailVerificationToken) -> str:
+        query = urlencode({"token": token})
+        return f"{self._public_url}/auth/verify-email?{query}"

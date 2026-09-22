@@ -4,6 +4,7 @@ from uuid import UUID
 from pavedame.application.common.ports.transaction_manager import TransactionManager
 from pavedame.application.common.ports.user_gateway import UserGateway
 from pavedame.application.common.services.current_user import CurrentUserService
+from pavedame.application.common.services.email_verification import EmailVerificationDeliveryService
 from pavedame.application.errors import AlreadyAuthenticatedError, AuthenticationError, UserAlreadyExistsError
 from pavedame.domain.user import User, UserService
 
@@ -27,11 +28,13 @@ class SignUpHandler:
         user_service: UserService,
         user_gateway: UserGateway,
         transaction_manager: TransactionManager,
+        email_verification_delivery_service: EmailVerificationDeliveryService,
     ) -> None:
         self._current_user_service = current_user_service
         self._user_service = user_service
         self._user_gateway = user_gateway
         self._transaction_manager = transaction_manager
+        self._email_verification_delivery_service = email_verification_delivery_service
 
     async def __call__(self, data: SignUpData) -> SignUpView:
 
@@ -57,7 +60,8 @@ class SignUpHandler:
             raise UserAlreadyExistsError(msg)
 
         await self._user_gateway.add(new_user)
-        await self._transaction_manager.commit()
+        await self._transaction_manager.flush()
+        await self._email_verification_delivery_service.issue_and_send(new_user.id, new_user.email)
 
         return SignUpView(
             id=new_user.id,

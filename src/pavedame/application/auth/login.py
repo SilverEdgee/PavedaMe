@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from pavedame.application.common.ports.user_gateway import UserGateway
 from pavedame.application.common.services.auth_session import AuthSessionService
 from pavedame.application.common.services.current_user import CurrentUserService
-from pavedame.application.errors import AlreadyAuthenticatedError, AuthenticationError
+from pavedame.application.errors import AlreadyAuthenticatedError, AuthenticationError, EmailNotVerifiedError
 from pavedame.domain.user import UserService
 
 
@@ -47,5 +47,9 @@ class LoginHandler:
         ):
             msg = "Password mismatch. Please try again."
             raise AuthenticationError(msg)
+
+        if not user.is_verified:
+            msg = "Email is not verified"
+            raise EmailNotVerifiedError(msg)
 
         await self._auth_session_service.create_session(user_id=user.id)

@@ -50,3 +50,7 @@ class UserService:
     def change_password(self, user: User, new_password: str) -> None:
         new_password = self._password_hasher.hash_password(new_password)
         user.password = new_password
+
+    @staticmethod
+    def verify_email(user: User) -> None:
+        user.is_verified = True

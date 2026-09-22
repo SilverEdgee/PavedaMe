@@ -1,11 +1,15 @@
+from typing import Annotated
+
 from dishka import FromDishka
 from dishka.integrations.fastapi import DishkaRoute
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, Query, Response
 from starlette import status
 
+from pavedame.application.auth.email_verification_model import RawEmailVerificationToken
 from pavedame.application.auth.login import LoginData, LoginHandler
 from pavedame.application.auth.logout import LogoutHandler
 from pavedame.application.auth.signup import SignUpData, SignUpHandler
+from pavedame.application.auth.verify_email import VerifyEmailHandler
 from pavedame.presentation.routes.auth.schemas import LoginRequestSchema, SignUpRequestSchema, SignUpResponseSchema
 
 auth_router: APIRouter = APIRouter(
@@ -45,6 +49,23 @@ async def login(
     )
 
     await interactor(data=data)
+    return response
+
+
+@auth_router.get(
+    "/verify-email",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Verify email",
+    description="Verify an email address and authenticate the user.",
+    responses={},
+)
+async def verify_email(
+    token: Annotated[str, Query(min_length=32)],
+    interactor: FromDishka[VerifyEmailHandler],
+    response: FromDishka[Response],
+) -> Response:
+    await interactor(RawEmailVerificationToken(token))
+    response.status_code = status.HTTP_204_NO_CONTENT
     return response
 
 
