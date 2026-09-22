@@ -9,6 +9,7 @@ class User:
     username: str
     password: bytes
     email: str
+    is_verified: bool = False
 
 
 class UserService:

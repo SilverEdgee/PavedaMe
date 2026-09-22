@@ -3,6 +3,7 @@ import os
 from pydantic import BaseModel, Field
 
 from pavedame.setup.config.database import PostgresConfig, SQLAlchemyConfig
+from pavedame.setup.config.email import SMTPConfig
 from pavedame.setup.config.uvicorn import UvicornConfig
 
 
@@ -17,4 +18,8 @@ class AppConfig(BaseModel):
 
     uvicorn: UvicornConfig = Field(
         default_factory=lambda: UvicornConfig(**os.environ),
+    )
+
+    smtp: SMTPConfig = Field(
+        default_factory=lambda: SMTPConfig(**os.environ),
     )

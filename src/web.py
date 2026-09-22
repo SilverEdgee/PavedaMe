@@ -10,6 +10,7 @@ from sqlalchemy.orm import clear_mappers
 
 from pavedame.setup.bootstrap import setup_config, setup_exc_handler, setup_map_configs, setup_routers
 from pavedame.setup.config.database import PostgresConfig, SQLAlchemyConfig
+from pavedame.setup.config.email import SMTPConfig
 from pavedame.setup.ioc import setup_providers
 
 
@@ -34,6 +35,7 @@ def create_app() -> FastAPI:
     context: dict[type[Any], Any] = {
         PostgresConfig: config.postgres,
         SQLAlchemyConfig: config.sqlalchemy,
+        SMTPConfig: config.smtp,
     }
     container: AsyncContainer = make_async_container(*setup_providers(), context=context)
 

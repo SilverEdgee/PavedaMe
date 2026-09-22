@@ -10,7 +10,13 @@ from pavedame.application.errors import (
     AuthorizationError,
     UserAlreadyExistsError,
 )
-from pavedame.infrastructure.errors import EntityAddError, GatewayError, InfrastructureError, RollbackError
+from pavedame.infrastructure.errors import (
+    EmailDeliveryError,
+    EntityAddError,
+    GatewayError,
+    InfrastructureError,
+    RollbackError,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -29,6 +35,7 @@ class ExceptionHandler:
             EntityAddError: status.HTTP_409_CONFLICT,
             RollbackError: status.HTTP_503_SERVICE_UNAVAILABLE,
             InfrastructureError: status.HTTP_503_SERVICE_UNAVAILABLE,
+            EmailDeliveryError: status.HTTP_503_SERVICE_UNAVAILABLE,
         }
     )
 
