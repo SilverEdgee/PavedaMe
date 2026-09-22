@@ -9,6 +9,4 @@ class AppConfig(BaseModel):
 
     postgres: PostgresConfig = Field(
         default_factory=PostgresConfig(**os.environ),
-
-
     )
