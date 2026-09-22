@@ -24,7 +24,7 @@ class CurrentUserService:
         session = await self._session_gateway.get_session()
 
         if session is None:
-            msg = "Session not found"
+            msg = "AuthSession not found"
             raise AuthenticationError(msg)
 
         user = await self._user_gateway.get_user_by_id(session.user_id)

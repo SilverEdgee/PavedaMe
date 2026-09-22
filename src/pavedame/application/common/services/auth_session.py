@@ -1,4 +1,4 @@
-from pavedame.application.auth.session_model import Session
+from pavedame.application.auth.session_model import AuthSession
 from pavedame.application.common.ports.session_gateway import SessionGateway
 from pavedame.application.common.ports.session_id_generator import SessionIDGenerator
 from pavedame.application.common.ports.session_timer import SessionTimer
@@ -30,7 +30,7 @@ class AuthSessionService:
 
         expiration = self._session_timer.session_expires_at
 
-        session = Session(
+        session = AuthSession(
             user_id=user_id,
             session_id = session_id,
             expiration = expiration,
@@ -41,7 +41,7 @@ class AuthSessionService:
 
         await self._session_transport.deliver(session_id)
 
-    async def get_session(self) -> Session:
+    async def get_session(self) -> AuthSession:
 
         if self._cached_session is not None:
             return self._cached_session

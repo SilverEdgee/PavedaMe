@@ -5,10 +5,10 @@ from uuid import UUID
 
 from pavedame.domain.user import UserID
 
-SessionID = NewType("SessionID", UUID)
+SessionID = NewType("SessionID", str)
 
 @dataclass(frozen=True, kw_only=True)
-class Session:
+class AuthSession:
     id: SessionID
     user_id: UserID
     exp: datetime
