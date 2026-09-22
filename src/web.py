@@ -1,18 +1,20 @@
 from fastapi import FastAPI
 
-from pavedame.setup.bootstrap import setup_config, setup_exc_handler
+from pavedame.setup.bootstrap import setup_config, setup_exc_handler, setup_routers, setup_map_configs
 
 
 def create_app() -> FastAPI:
     #add exception_handler, configuration
-    setup_config()
-    setup_exc_handler()
+    config = setup_config()
+    setup_map_configs()
     app: FastAPI = FastAPI(
         version="1.0.0",
         title="PavedaMe API",
         description="API for managing organization's notifications",
         contact={"name": "Dzianis Pametska", "email": "denispometko8@gmail.com"},
     )
+    setup_routers(app)
+    setup_exc_handler(app)
 
     return app
 

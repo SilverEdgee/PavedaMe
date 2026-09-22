@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, PostgresDsn
 
 
 class PostgresConfig(BaseModel):
@@ -32,3 +32,17 @@ class PostgresConfig(BaseModel):
         alias="POSTGRES_DRIVER",
         description="Postgres driver name",
     )
+
+    @property
+    def uri(self) -> str:
+        return str(
+            PostgresDsn.build(
+                scheme=f"postgresql+{self.driver}",
+                username=self.user,
+                password=self.password,
+                port=self.port,
+                host=self.host,
+                path=self.database,
+            )
+        )
+
