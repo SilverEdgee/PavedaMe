@@ -10,4 +10,4 @@ SessionID = NewType("SessionID", str)
 class AuthSession:
     id: SessionID
     user_id: UserID
-    exp: datetime
+    expiration: datetime

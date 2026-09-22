@@ -1,3 +1,5 @@
+from datetime import UTC, datetime
+
 from pavedame.application.auth.session_model import AuthSession, SessionID
 from pavedame.application.common.ports.session_gateway import SessionGateway
 from pavedame.application.common.ports.session_id_generator import SessionIDGenerator
@@ -10,30 +12,28 @@ from pavedame.domain.ports import UserID
 
 class AuthSessionService:
     def __init__(
-            self,
-            session_id_generator: SessionIDGenerator,
-            session_timer: SessionTimer,
-            session_gateway: SessionGateway,
-            transaction_manager: TransactionManager,
-            session_transport: SessionTransport
-    ):
+        self,
+        session_id_generator: SessionIDGenerator,
+        session_timer: SessionTimer,
+        session_gateway: SessionGateway,
+        transaction_manager: TransactionManager,
+        session_transport: SessionTransport,
+    ) -> None:
         self._session_id_generator = session_id_generator
         self._session_timer = session_timer
         self._session_gateway = session_gateway
         self._transaction_manager = transaction_manager
         self._session_transport = session_transport
-        self._cached_session = None
+        self._cached_session: AuthSession | None = None
 
     async def create_session(self, user_id: UserID) -> None:
-
         session_id = self._session_id_generator()
-
         expiration = self._session_timer.session_expires_at
 
         session = AuthSession(
+            id=session_id,
             user_id=user_id,
-            session_id = session_id,
-            expiration = expiration,
+            expiration=expiration,
         )
 
         await self._session_gateway.add(session)
@@ -42,8 +42,11 @@ class AuthSessionService:
         await self._session_transport.deliver(session_id)
 
     async def get_session(self) -> AuthSession:
-
         if self._cached_session is not None:
+            if self._cached_session.expiration <= datetime.now(UTC):
+                await self._invalidate_session(self._cached_session.id)
+                msg = "Authentication failed"
+                raise AuthenticationError(msg)
             return self._cached_session
 
         session_id = await self._session_transport.extract_id()
@@ -57,11 +60,29 @@ class AuthSessionService:
             msg = "Authentication failed"
             raise AuthenticationError(msg)
 
-        self._cached_session = session
-        return self._cached_session
+        if session.expiration <= datetime.now(UTC):
+            await self._invalidate_session(session.id)
 
+            msg = "Authentication failed"
+            raise AuthenticationError(msg)
+
+        self._cached_session = session
+        return session
+
+    async def invalidate_current_session(self) -> None:
+        session_id = await self._session_transport.extract_id()
+        if session_id is not None:
+            await self._invalidate_session(SessionID(session_id))
+            return
 
     async def invalidate_all_user_sessions(self, user_id: UserID) -> None:
         await self._session_gateway.delete_all_for_user(user_id)
+        await self._transaction_manager.commit()
+        await self._session_transport.remove_current()
+        self._cached_session = None
 
+    async def _invalidate_session(self, session_id: SessionID) -> None:
+        await self._session_gateway.delete_by_id(session_id)
+        await self._transaction_manager.commit()
+        await self._session_transport.remove_current()
         self._cached_session = None

@@ -1,4 +1,4 @@
-from sqlalchemy import delete, select
+from sqlalchemy import delete
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -11,10 +11,8 @@ from pavedame.infrastructure.persistence.models import auth_table
 
 
 class AlchemyAuthSessionGateway(SessionGateway):
-
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession) -> None:
         self._session = session
-
 
     async def add(self, auth_session: AuthSession) -> None:
         self._session.add(auth_session)
@@ -26,15 +24,13 @@ class AlchemyAuthSessionGateway(SessionGateway):
         except SQLAlchemyError as e:
             raise GatewayError(DB_QUERY_FAILED) from e
 
-    async def get_session(self, session_id: SessionID) -> AuthSession:
-
-        stmt = select(AuthSession).where(auth_table.c.id == session_id)
+    async def get_session(self, session_id: SessionID) -> AuthSession | None:
         try:
-            session = await self._session.execute(stmt)
+            auth_session: AuthSession | None = await self._session.get(AuthSession, session_id)
         except SQLAlchemyError as e:
             raise GatewayError(DB_QUERY_FAILED) from e
 
-        return session
+        return auth_session
 
     async def delete_all_for_user(self, user_id: UserID) -> None:
         stmt = delete(AuthSession).where(auth_table.c.user_id == user_id)
