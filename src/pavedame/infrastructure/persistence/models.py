@@ -9,21 +9,21 @@ metadata = sa.MetaData()
 mapper_registry = registry(metadata=metadata)
 
 auth_table = sa.Table(
-    'auth_sessions',
+    "auth_sessions",
     metadata,
-    sa.Column('id', sa.String, primary_key=True, nullable=False),
-    sa.Column('user_id', sa.UUID(as_uuid=True), sa.ForeignKey("users.id", ondelete="CASCADE"), nullable=False),
-    sa.Column('expiration', sa.DateTime(timezone=True), nullable=False),
-    sa.Index('idx_auth_session_id', 'user_id', unique=True),
+    sa.Column("id", sa.String, primary_key=True, nullable=False),
+    sa.Column("user_id", sa.UUID(as_uuid=True), sa.ForeignKey("users.id", ondelete="CASCADE"), nullable=False),
+    sa.Column("expiration", sa.DateTime(timezone=True), nullable=False),
+    sa.Index("idx_auth_session_id", "user_id", unique=True),
 )
 
 user_table = sa.Table(
-    'users',
+    "users",
     metadata,
-    sa.Column('id', sa.UUID(as_uuid=True), primary_key=True, nullable=False),
-    sa.Column('username', sa.String, nullable=False),
-    sa.Column('email', sa.String, nullable=False, unique=True),
-    sa.Column('password', sa.LargeBinary(), nullable=False),
+    sa.Column("id", sa.UUID(as_uuid=True), primary_key=True, nullable=False),
+    sa.Column("username", sa.String, nullable=False),
+    sa.Column("email", sa.String, nullable=False, unique=True),
+    sa.Column("password", sa.LargeBinary(), nullable=False),
 )
 
 

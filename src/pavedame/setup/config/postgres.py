@@ -24,7 +24,7 @@ class PostgresConfig(BaseModel):
     )
 
     database: str = Field(
-        alias="POSTGRES_DATABASE",
+        alias="POSTGRES_DB",
         description="Postgres database name",
     )
 
