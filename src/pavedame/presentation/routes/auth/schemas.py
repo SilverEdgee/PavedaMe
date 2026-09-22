@@ -1,7 +1,7 @@
 from typing import Annotated
 from uuid import UUID
 
-from pydantic import BaseModel, EmailStr, Field, SecretStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class SignUpRequestSchema(BaseModel):
@@ -15,7 +15,7 @@ class SignUpRequestSchema(BaseModel):
         )
     ]
     password: Annotated[
-        SecretStr,
+        str,
         Field(
             min_length=8,
             max_length=64,
@@ -45,7 +45,7 @@ class SignUpResponseSchema(BaseModel):
 
 class LoginRequestSchema(BaseModel):
     password: Annotated[
-        SecretStr,
+        str,
         Field(
             min_length=8,
             max_length=64,

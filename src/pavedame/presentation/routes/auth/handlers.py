@@ -13,7 +13,7 @@ auth_router: APIRouter = APIRouter(
 
 @auth_router.post(
     "/signup",
-    response_class=status.HTTP_201_CREATED,
+    status_code=status.HTTP_201_CREATED,
     summary="Sign up user",
     description="...",
     responses={}
@@ -35,7 +35,7 @@ async def sign_up(
 
 @auth_router.post(
     "/login",
-    response_class=status.HTTP_200_OK,
+    status_code=status.HTTP_200_OK,
     summary="Login user",
     description="...",
     responses={}
@@ -53,7 +53,7 @@ async def login(
 
 @auth_router.post(
     "/logout",
-    response_class=status.HTTP_204_NO_CONTENT,
+    status_code=status.HTTP_204_NO_CONTENT,
     summary="Logout user",
     description="...",
     responses={}
