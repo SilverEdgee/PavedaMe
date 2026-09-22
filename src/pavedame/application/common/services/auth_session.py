@@ -5,6 +5,7 @@ from pavedame.application.common.ports.session_timer import SessionTimer
 from pavedame.application.common.ports.session_transport import SessionTransport
 from pavedame.application.common.ports.transaction_manager import TransactionManager
 from pavedame.application.errors.errors import AuthenticationError
+from pavedame.domain.user import UserID
 
 
 class AuthSessionService:

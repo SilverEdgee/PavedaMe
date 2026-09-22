@@ -1,8 +1,11 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
-SessionID = NewType('SessionID', UUID)
+from pavedame.domain.user import UserID
+
+SessionID = NewType("SessionID", UUID)
 
 @dataclass(frozen=True, kw_only=True)
 class Session:

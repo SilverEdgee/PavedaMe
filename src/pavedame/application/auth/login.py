@@ -3,7 +3,8 @@ from dataclasses import dataclass
 from pavedame.application.common.ports.user_gateway import UserGateway
 from pavedame.application.common.services.auth_session import AuthSessionService
 from pavedame.application.common.services.current_user import CurrentUserService
-from pavedame.application.errors.errors import AuthenticationError, AlreadyAuthenticatedError
+from pavedame.application.errors.errors import AlreadyAuthenticatedError, AuthenticationError
+from pavedame.domain.user import UserService
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -43,7 +44,7 @@ class LoginHandler:
             raise AuthenticationError(msg)
 
         if not self._user_service.verify_password(data.password, user.password):
-            msg = f"Password mismatch. Please try again."
+            msg = "Password mismatch. Please try again."
             raise AuthenticationError(msg)
 
         await self._auth_session_service.create_session(user_id=user.id)

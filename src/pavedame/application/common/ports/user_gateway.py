@@ -1,7 +1,7 @@
 from typing import Protocol
-from uuid import UUID
 
-from sqlalchemy.testing.pickleable import User
+
+from pavedame.domain.user import UserID, User
 
 
 class UserGateway(Protocol):
