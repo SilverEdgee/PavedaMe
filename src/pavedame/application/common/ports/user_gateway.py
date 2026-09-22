@@ -1,7 +1,7 @@
 from typing import Protocol
 
-
-from pavedame.domain.user import UserID, User
+from pavedame.domain.ports import UserID
+from pavedame.domain.user import User
 
 
 class UserGateway(Protocol):
@@ -10,7 +10,6 @@ class UserGateway(Protocol):
 
     async def delete_by_id(self, user_id: UserID) -> None: ...
 
-    async def get_user_by_id(self, user_id: UserID) -> User: ...
+    async def get_user_by_id(self, user_id: UserID) -> User | None: ...
 
-    async def get_user_by_email(self, email: str) -> User: ...
-
+    async def get_user_by_email(self, email: str) -> User | None: ...

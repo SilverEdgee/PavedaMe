@@ -1,9 +1,8 @@
 from dataclasses import dataclass
 from datetime import datetime
 from typing import NewType
-from uuid import UUID
 
-from pavedame.domain.user import UserID
+from pavedame.domain.ports import UserID
 
 SessionID = NewType("SessionID", str)
 

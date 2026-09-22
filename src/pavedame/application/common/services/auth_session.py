@@ -1,11 +1,11 @@
-from pavedame.application.auth.session_model import AuthSession
+from pavedame.application.auth.session_model import AuthSession, SessionID
 from pavedame.application.common.ports.session_gateway import SessionGateway
 from pavedame.application.common.ports.session_id_generator import SessionIDGenerator
 from pavedame.application.common.ports.session_timer import SessionTimer
 from pavedame.application.common.ports.session_transport import SessionTransport
 from pavedame.application.common.ports.transaction_manager import TransactionManager
-from pavedame.application.errors.errors import AuthenticationError
-from pavedame.domain.user import UserID
+from pavedame.application.errors import AuthenticationError
+from pavedame.domain.ports import UserID
 
 
 class AuthSessionService:
@@ -51,7 +51,7 @@ class AuthSessionService:
             msg = "Authentication failed"
             raise AuthenticationError(msg)
 
-        session = await self._session_gateway.get_session(session_id)
+        session = await self._session_gateway.get_session(SessionID(session_id))
 
         if session is None:
             msg = "Authentication failed"
@@ -65,4 +65,3 @@ class AuthSessionService:
         await self._session_gateway.delete_all_for_user(user_id)
 
         self._cached_session = None
-

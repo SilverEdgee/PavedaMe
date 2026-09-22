@@ -1,5 +1,5 @@
 import secrets
-from datetime import timedelta, datetime, timezone
+from datetime import UTC, datetime, timedelta
 from typing import override
 
 from pavedame.application.auth.session_model import SessionID
@@ -14,7 +14,7 @@ class AuthSessionTimer(SessionTimer):
 
     @property
     def session_expires_at(self) -> datetime:
-        return self._ttl + datetime.now(timezone.utc)
+        return self._ttl + datetime.now(UTC)
 
 
 class SecretsAuthIdGenerator(SessionIDGenerator):

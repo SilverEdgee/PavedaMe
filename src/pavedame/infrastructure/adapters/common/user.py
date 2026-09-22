@@ -2,8 +2,7 @@ import uuid
 
 import bcrypt
 
-from pavedame.domain.ports import UserIDGenerator, PasswordHasher
-from pavedame.domain.user import UserID
+from pavedame.domain.ports import PasswordHasher, UserID, UserIDGenerator
 
 
 class UUID4UserIDGenerator(UserIDGenerator):

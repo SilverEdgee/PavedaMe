@@ -1,10 +1,6 @@
 from dataclasses import dataclass
-from typing import NewType, Protocol
-from uuid import UUID
 
-from pavedame.domain.ports import UserIDGenerator, PasswordHasher
-
-UserID = NewType('UserID', UUID)
+from pavedame.domain.ports import PasswordHasher, UserID, UserIDGenerator
 
 
 @dataclass(kw_only=True)

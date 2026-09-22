@@ -1,10 +1,11 @@
 from dataclasses import dataclass
 from types import MappingProxyType
 
-from fastapi import status, FastAPI, Request
+from fastapi import FastAPI, Request, status
 from starlette.responses import JSONResponse
 
-from pavedame.application.errors.errors import AuthenticationError, AuthorizationError, AlreadyAuthenticatedError
+from pavedame.application.errors import AlreadyAuthenticatedError, AuthenticationError, AuthorizationError
+from pavedame.infrastructure.errors import EntityAddError, GatewayError, InfrastructureError, RollbackError
 
 
 @dataclass(frozen=True, slots=True)
@@ -20,6 +21,10 @@ class ExceptionHandler:
             AuthenticationError: status.HTTP_401_UNAUTHORIZED,
             AuthorizationError: status.HTTP_403_FORBIDDEN,
             AlreadyAuthenticatedError: status.HTTP_409_CONFLICT,
+            GatewayError: status.HTTP_503_SERVICE_UNAVAILABLE,
+            EntityAddError: status.HTTP_503_SERVICE_UNAVAILABLE,
+            RollbackError: status.HTTP_503_SERVICE_UNAVAILABLE,
+            InfrastructureError: status.HTTP_503_SERVICE_UNAVAILABLE,
         }
     )
 

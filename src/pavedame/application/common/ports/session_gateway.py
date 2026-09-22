@@ -1,7 +1,7 @@
 from typing import Protocol
 
 from pavedame.application.auth.session_model import AuthSession, SessionID
-from pavedame.domain.user import UserID
+from pavedame.domain.ports import UserID
 
 
 class SessionGateway(Protocol):

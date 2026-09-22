@@ -1,6 +1,7 @@
-from typing import Protocol
+from typing import NewType, Protocol
+from uuid import UUID
 
-from pavedame.domain.user import UserID
+UserID = NewType("UserID", UUID)
 
 
 class UserIDGenerator(Protocol):
