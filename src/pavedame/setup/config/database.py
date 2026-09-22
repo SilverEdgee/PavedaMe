@@ -46,3 +46,37 @@ class PostgresConfig(BaseModel):
             )
         )
 
+
+class SQLAlchemyConfig(BaseModel):
+
+    pool_pre_ping: bool = Field(
+        alias="DB_POOL_PRE_PING",
+        description="Enable database pool pre ping.",
+    )
+
+    pool_size: int = Field(
+        alias="DB_POOL_SIZE",
+        description="Database connection pool size.",
+    )
+
+    pool_recycle: int = Field(
+        alias="DB_POOL_RECYCLE",
+        description="Database connection pool recycle.",
+    )
+
+    max_overflow: int = Field(
+        alias="DB_POOL_MAX_OVERFLOW",
+        description="Database connection pool max overflow.",
+    )
+
+    echo: bool = Field(
+        alias="DB_ECHO",
+        description="Enable echo mode.",
+        validate_default=False,
+    )
+
+    auto_flush: bool = Field(
+        alias="DB_AUTO_FLUSH",
+        description="Enable auto flush mode.",
+        validate_default=False,
+    )

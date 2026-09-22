@@ -40,4 +40,4 @@ default:
 
 #Run API server (uvicorn)
 @uvicorn:
-	PYTHONPATH=src uvicorn pavedame.web:create_app --factory
+	PYTHONPATH=src uvicorn web:create_app --factory
