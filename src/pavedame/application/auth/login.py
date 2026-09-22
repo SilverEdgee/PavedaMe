@@ -9,7 +9,6 @@ from pavedame.domain.user import UserService
 
 @dataclass(frozen=True, kw_only=True, slots=True)
 class LoginData:
-    username: str
     password: str
     email: str
 
@@ -27,9 +26,7 @@ class LoginHandler:
         self._auth_session_service = auth_service
         self._user_service = user_service
 
-
     async def __call__(self, data: LoginData) -> None:
-
         try:
             await self._current_user_service.get_current_user()
             msg = "You are already logged in."
@@ -37,17 +34,18 @@ class LoginHandler:
         except AuthenticationError:
             pass
 
-        user = await self._user_gateway.get_user_by_email(data.email)
+        normalized_email = data.email.strip().lower()
+        user = await self._user_gateway.get_user_by_email(normalized_email)
 
         if user is None:
-            msg = f"No user with email '{data.email}' found."
+            msg = f"No user with email '{normalized_email}' found."
             raise AuthenticationError(msg)
 
-        if not self._user_service.verify_password(data.password, user.password):
+        if not self._user_service.verify_password(
+            user_password=user.password,
+            entered_password=data.password,
+        ):
             msg = "Password mismatch. Please try again."
             raise AuthenticationError(msg)
 
         await self._auth_session_service.create_session(user_id=user.id)
-
-
-

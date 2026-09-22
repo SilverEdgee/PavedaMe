@@ -5,7 +5,6 @@ from pavedame.domain.user import User
 
 
 class UserGateway(Protocol):
-
     async def add(self, user: User) -> None: ...
 
     async def delete_by_id(self, user_id: UserID) -> None: ...

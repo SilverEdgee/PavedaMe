@@ -18,8 +18,8 @@ default:
 
 #Lint files
 @lint:
-	ruff check --fix
-	ruff format
+	uv run ruff check --fix
+	uv run ruff format
 
 #Run docker container
 @up:
@@ -40,4 +40,4 @@ default:
 
 #Run API server (uvicorn)
 @uvicorn:
-	PYTHONPATH=src uvicorn web:create_app --factory
+	PYTHONPATH=src uv run python -m web

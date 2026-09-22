@@ -1,6 +1,8 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from typing import Any
 
+import uvicorn
 from dishka import AsyncContainer, make_async_container
 from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
@@ -29,7 +31,7 @@ def create_app() -> FastAPI:
         contact={"name": "Dzianis Pametska", "email": "denispometko8@gmail.com"},
     )
 
-    context = {
+    context: dict[type[Any], Any] = {
         PostgresConfig: config.postgres,
         SQLAlchemyConfig: config.sqlalchemy,
     }
@@ -41,6 +43,16 @@ def create_app() -> FastAPI:
 
     return app
 
+
+def run() -> None:
+    uvicorn_config = setup_config().uvicorn
+    uvicorn.run(
+        "web:create_app",
+        factory=True,
+        host=uvicorn_config.host,
+        port=uvicorn_config.port,
+    )
+
+
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(create_app(), host="0.0.0.0", port=8000)
+    run()

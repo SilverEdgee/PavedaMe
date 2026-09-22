@@ -51,7 +51,7 @@ ignore_missing_imports = true
 [tool.ruff]
 src = ["src"]
 include = ["src/**.py", "tests/**.py"]
-exclude = ["src/trafficmaster/setup/config/**.py"]
+exclude = ["src/pavedame/infrastructure/persistence/alembic"]
 target-version = "py312"
 line-length = 120
 fix = true
@@ -59,9 +59,6 @@ fix = true
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = ["D", "CPY001", "A005", "TRY003", "COM812", "FBT001", "FBT003", "PLR0913", "RUF001"]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101", "PLR2004", "S106"]
 
 [tool.ruff.format]
 docstring-code-format = true

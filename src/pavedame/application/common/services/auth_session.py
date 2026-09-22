@@ -67,7 +67,7 @@ class AuthSessionService:
             raise AuthenticationError(msg)
 
         self._cached_session = session
-        return session
+        return self._cached_session
 
     async def invalidate_current_session(self) -> None:
         session_id = await self._session_transport.extract_id()

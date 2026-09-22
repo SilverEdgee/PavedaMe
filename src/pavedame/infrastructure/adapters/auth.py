@@ -8,8 +8,7 @@ from pavedame.application.common.ports.session_timer import SessionTimer
 
 
 class AuthSessionTimer(SessionTimer):
-
-    def __init__(self, ttl: timedelta):
+    def __init__(self, ttl: timedelta) -> None:
         self._ttl = ttl
 
     @property
@@ -18,7 +17,6 @@ class AuthSessionTimer(SessionTimer):
 
 
 class SecretsAuthIdGenerator(SessionIDGenerator):
-
     @override
     def __call__(self) -> SessionID:
         return SessionID(secrets.token_urlsafe(32))

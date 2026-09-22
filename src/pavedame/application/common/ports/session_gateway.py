@@ -5,7 +5,6 @@ from pavedame.domain.ports import UserID
 
 
 class SessionGateway(Protocol):
-
     async def add(self, session: AuthSession) -> None: ...
 
     async def delete_by_id(self, session_id: SessionID) -> None: ...

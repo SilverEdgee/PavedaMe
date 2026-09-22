@@ -20,6 +20,7 @@ async def get_engine(
     yield engine
     await engine.dispose()
 
+
 def get_sessionmaker(
     engine: AsyncEngine,
     sqlalchemy_config: SQLAlchemyConfig,
@@ -28,7 +29,9 @@ def get_sessionmaker(
     return async_sessionmaker(
         bind=engine,
         autoflush=sqlalchemy_config.auto_flush,
+        expire_on_commit=False,
     )
+
 
 async def get_session(
     sessionmaker: async_sessionmaker[AsyncSession],

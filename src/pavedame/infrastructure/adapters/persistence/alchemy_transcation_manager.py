@@ -11,8 +11,9 @@ from pavedame.infrastructure.errors import EntityAddError, GatewayError, Rollbac
 
 
 class AlchemyTransactionManager(TransactionManager):
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession) -> None:
         self._session = session
+
     async def commit(self) -> None:
         try:
             await self._session.commit()

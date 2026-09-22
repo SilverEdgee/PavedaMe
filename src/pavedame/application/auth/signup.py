@@ -4,7 +4,7 @@ from uuid import UUID
 from pavedame.application.common.ports.transaction_manager import TransactionManager
 from pavedame.application.common.ports.user_gateway import UserGateway
 from pavedame.application.common.services.current_user import CurrentUserService
-from pavedame.application.errors import AuthenticationError, AlreadyAuthenticatedError, UserAlreadyExistsError
+from pavedame.application.errors import AlreadyAuthenticatedError, AuthenticationError, UserAlreadyExistsError
 from pavedame.domain.user import User, UserService
 
 
@@ -14,19 +14,20 @@ class SignUpData:
     password: str
     email: str
 
+
 @dataclass(frozen=True, kw_only=True, slots=True)
 class SignUpView:
     id: UUID
 
-class SignUpHandler:
 
+class SignUpHandler:
     def __init__(
-            self,
-            current_user_service: CurrentUserService,
-            user_service: UserService,
-            user_gateway: UserGateway,
-            transaction_manager: TransactionManager,
-    ):
+        self,
+        current_user_service: CurrentUserService,
+        user_service: UserService,
+        user_gateway: UserGateway,
+        transaction_manager: TransactionManager,
+    ) -> None:
         self._current_user_service = current_user_service
         self._user_service = user_service
         self._user_gateway = user_gateway
@@ -41,9 +42,11 @@ class SignUpHandler:
         except AuthenticationError:
             pass
 
+        normalized_email = data.email.strip().lower()
+
         new_user: User = self._user_service.create_user(
             username=data.username,
-            email=data.email,
+            email=normalized_email,
             password=data.password,
         )
 
@@ -59,4 +62,3 @@ class SignUpHandler:
         return SignUpView(
             id=new_user.id,
         )
-

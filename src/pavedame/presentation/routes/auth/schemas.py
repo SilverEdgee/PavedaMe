@@ -12,7 +12,7 @@ class SignUpRequestSchema(BaseModel):
             max_length=64,
             title="Username",
             description="The username to use",
-        )
+        ),
     ]
     password: Annotated[
         str,
@@ -21,17 +21,16 @@ class SignUpRequestSchema(BaseModel):
             max_length=64,
             title="Password",
             description="The password to use",
-        )
+        ),
     ]
     email: Annotated[
         EmailStr,
         Field(
             title="Email",
             description="The e-mail address of the user",
-            examples="denispometko8@gmail.com"
-        )
+            examples=["denispometko8@gmail.com"],
+        ),
     ]
-
 
 
 class SignUpResponseSchema(BaseModel):
@@ -40,8 +39,9 @@ class SignUpResponseSchema(BaseModel):
         Field(
             title="UserID",
             description="The user ID, stored as UUID",
-        )
+        ),
     ]
+
 
 class LoginRequestSchema(BaseModel):
     password: Annotated[
@@ -51,13 +51,13 @@ class LoginRequestSchema(BaseModel):
             max_length=64,
             title="Password",
             description="The password to use",
-        )
+        ),
     ]
     email: Annotated[
         EmailStr,
         Field(
             title="Email",
             description="The e-mail address of the user",
-            examples="denispometko8@gmail.com"
-        )
+            examples=["denispometko8@gmail.com"],
+        ),
     ]

@@ -30,5 +30,3 @@ class CurrentUserService:
         self._cached_user = user
 
         return user
-
-

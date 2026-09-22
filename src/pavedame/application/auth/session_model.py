@@ -6,7 +6,8 @@ from pavedame.domain.ports import UserID
 
 SessionID = NewType("SessionID", str)
 
-@dataclass(frozen=True, kw_only=True)
+
+@dataclass(kw_only=True)
 class AuthSession:
     id: SessionID
     user_id: UserID

@@ -1,6 +1,6 @@
 from dishka import FromDishka
 from dishka.integrations.fastapi import DishkaRoute
-from fastapi import APIRouter
+from fastapi import APIRouter, Response
 from starlette import status
 
 from pavedame.application.auth.login import LoginData, LoginHandler
@@ -16,11 +16,7 @@ auth_router: APIRouter = APIRouter(
 
 
 @auth_router.post(
-    "/signup",
-    status_code=status.HTTP_201_CREATED,
-    summary="Sign up user",
-    description="...",
-    responses={}
+    "/signup", status_code=status.HTTP_201_CREATED, summary="Sign up user", description="...", responses={}
 )
 async def sign_up(
     request: SignUpRequestSchema,
@@ -37,32 +33,28 @@ async def sign_up(
     return SignUpResponseSchema(id=view.id)
 
 
-@auth_router.post(
-    "/login",
-    status_code=status.HTTP_200_OK,
-    summary="Login user",
-    description="...",
-    responses={}
-)
+@auth_router.post("/login", status_code=status.HTTP_200_OK, summary="Login user", description="...", responses={})
 async def login(
     request: LoginRequestSchema,
     interactor: FromDishka[LoginHandler],
-) -> None:
+    response: FromDishka[Response],
+) -> Response:
     data = LoginData(
         email=request.email,
         password=request.password,
     )
 
     await interactor(data=data)
+    return response
+
 
 @auth_router.post(
-    "/logout",
-    status_code=status.HTTP_204_NO_CONTENT,
-    summary="Logout user",
-    description="...",
-    responses={}
+    "/logout", status_code=status.HTTP_204_NO_CONTENT, summary="Logout user", description="...", responses={}
 )
 async def logout(
     interactor: FromDishka[LogoutHandler],
-) -> None:
+    response: FromDishka[Response],
+) -> Response:
     await interactor()
+    response.status_code = status.HTTP_204_NO_CONTENT
+    return response

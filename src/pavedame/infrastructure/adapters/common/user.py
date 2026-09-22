@@ -6,13 +6,11 @@ from pavedame.domain.ports import PasswordHasher, UserID, UserIDGenerator
 
 
 class UUID4UserIDGenerator(UserIDGenerator):
-
     def __call__(self) -> UserID:
         return UserID(uuid.uuid4())
 
 
 class BcryptPasswordHasher(PasswordHasher):
-
     def hash_password(self, password: str) -> bytes:
         return bcrypt.hashpw(password.encode("utf8"), bcrypt.gensalt())
 

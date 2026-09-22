@@ -6,8 +6,7 @@ from pavedame.application.common.ports.session_transport import SessionTransport
 
 
 class CookieAuthSessionTransport(SessionTransport):
-
-    def __init__(self, request: Request, response: Response):
+    def __init__(self, request: Request, response: Response) -> None:
         self._request = request
         self._response = response
 
@@ -16,9 +15,9 @@ class CookieAuthSessionTransport(SessionTransport):
             key="session_id",
             value=session_id,
             httponly=True,
-            secure=True,
-            samesite="Lax",
-            path="/"
+            secure=self._request.url.scheme == "https",
+            samesite="lax",
+            path="/",
         )
 
     async def extract_id(self) -> str | None:

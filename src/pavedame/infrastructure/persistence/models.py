@@ -33,6 +33,7 @@ def map_auth_session_table() -> None:
         auth_table,
     )
 
+
 def map_user_table() -> None:
     mapper_registry.map_imperatively(
         User,

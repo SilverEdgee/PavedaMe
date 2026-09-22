@@ -2,7 +2,6 @@ from pydantic import BaseModel, Field, PostgresDsn
 
 
 class PostgresConfig(BaseModel):
-
     user: str = Field(
         alias="POSTGRES_USER",
         description="Postgres user name",
@@ -48,7 +47,6 @@ class PostgresConfig(BaseModel):
 
 
 class SQLAlchemyConfig(BaseModel):
-
     pool_pre_ping: bool = Field(
         alias="DB_POOL_PRE_PING",
         description="Enable database pool pre ping.",
