@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from pavedame.setup.bootstrap import setup_config, setup_exc_handler, setup_routers, setup_map_configs
+from pavedame.setup.bootstrap import setup_config, setup_exc_handler, setup_map_configs, setup_routers
 
 
 def create_app() -> FastAPI:

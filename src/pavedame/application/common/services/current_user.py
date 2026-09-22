@@ -1,7 +1,7 @@
 from pavedame.application.common.ports.session_gateway import SessionGateway
 from pavedame.application.common.ports.user_gateway import UserGateway
 from pavedame.application.common.services.auth_session import AuthSessionService
-from pavedame.application.errors.errors import AuthenticationError
+from pavedame.application.errors import AuthenticationError
 from pavedame.domain.user import User
 
 

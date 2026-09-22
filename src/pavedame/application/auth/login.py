@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from pavedame.application.common.ports.user_gateway import UserGateway
 from pavedame.application.common.services.auth_session import AuthSessionService
 from pavedame.application.common.services.current_user import CurrentUserService
-from pavedame.application.errors.errors import AlreadyAuthenticatedError, AuthenticationError
+from pavedame.application.errors import AlreadyAuthenticatedError, AuthenticationError
 from pavedame.domain.user import UserService
 
 
