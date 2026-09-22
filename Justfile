@@ -36,7 +36,11 @@ default:
 
 #Static mypy check
 @static:
-	mypy --config-file pyproject.toml
+	uv run mypy --config-file pyproject.toml
+
+#Apply database migrations
+@migrate:
+	uv run alembic upgrade head
 
 #Run API server (uvicorn)
 @uvicorn:

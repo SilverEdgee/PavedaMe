@@ -36,6 +36,7 @@ class AuthSessionService:
             expiration=expiration,
         )
 
+        await self._session_gateway.delete_all_for_user(user_id)
         await self._session_gateway.add(session)
         await self._transaction_manager.commit()
 
